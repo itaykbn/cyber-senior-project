@@ -22,9 +22,13 @@ urlpatterns = [
 
 # Use include() to add paths from the catalog application
 from django.urls import include
+from django.views.generic.base import TemplateView
 
 urlpatterns += [
     path('catalog/', include('catalog.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+
 ]
 
 # Add URL maps to redirect the base URL to our application
