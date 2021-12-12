@@ -1,15 +1,27 @@
 <!-- templates/registration/login.html -->
-{% extends 'base.html' %}
+<!-- templates/base.html -->
+<!DOCTYPE html>
 
-{% block title %}Login{% endblock %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Login</title>
+    {% load static %}
+    <link rel="loginStyle" href="{% static 'css/login.css' %}">
+</head>
+<body>
+  <h2>Log In</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p style="text-align:center">Don't have an account?<a href="/accounts/register">register</a> instead.</p>
 
-{% block content %}
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <p style="text-align:center">Don't have an account?<a href="/accounts/register">register</a> instead.</p>
+    <button type="submit">Log In</button>
+  </form>
+</body>
+</html>
 
-  <button type="submit">Log In</button>
-</form>
-{% endblock %}
+
+
+
+
