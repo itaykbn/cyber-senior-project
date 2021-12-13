@@ -4,20 +4,22 @@
 
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Login</title>
+    <meta charset="utf-8">
+    <title>Login</title>
     {% load static %}
-    <link rel="loginStyle" href="{% static 'css/login.css' %}">
-</head>
+
+    <link rel="stylesheet" href="{%  static  'cum.css'  %}">
+
+
 <body>
-  <h2>Log In</h2>
-  <form method="post">
+<h2>Log In</h2>
+<form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <p style="text-align:center">Don't have an account?<a href="/accounts/register">register</a> instead.</p>
 
     <button type="submit">Log In</button>
-  </form>
+</form>
 </body>
 </html>
 

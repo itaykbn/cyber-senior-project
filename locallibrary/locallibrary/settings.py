@@ -50,15 +50,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-STATICFILES_DIRS = [
-]
-
 ROOT_URLCONF = 'locallibrary.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [str(BASE_DIR.joinpath('templates/registration/login.html')) ],
+        'DIRS': [str(BASE_DIR.joinpath('templates/registration/login.html'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -114,12 +111,22 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-#print(str(STATIC_ROOT))
+
+print(STATIC_ROOT)
+print(STATIC_URL)
+
+STATICFILES_DIRS = [
+    os.path.join(STATIC_ROOT, 'personal\\css')
+]
+
+
+
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
