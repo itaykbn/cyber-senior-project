@@ -26,18 +26,17 @@ from django.urls import include
 from django.views.generic.base import TemplateView
 
 urlpatterns += [
-    path('catalog/', include('catalog.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/', include('catalog.accounts')),
+    path('accounts/', include('accounts.urls')),
 
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('', include('home.urls')),
 ]
 
 # Add URL maps to redirect the base URL to our application
 from django.views.generic import RedirectView
 
 urlpatterns += [
-    path('', RedirectView.as_view(url='catalog/', permanent=True)),
+    #path('', RedirectView.as_view(url='/', permanent=True)),
 ]
 
 # Use static() to add url mapping to serve static files during development (only)

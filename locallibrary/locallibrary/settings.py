@@ -36,7 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'catalog.apps.CatalogConfig',
+    'accounts.apps.AccountsConfig',
+    'home.apps.HomeConfig',
+
     # 'crispy_forms',
 ]
 
@@ -55,7 +57,7 @@ ROOT_URLCONF = 'locallibrary.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [str(BASE_DIR.joinpath('templates/registration/login.html'))],
+        'DIRS': [str(BASE_DIR.joinpath('templates'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,18 +118,11 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-print(STATIC_ROOT)
-print(STATIC_URL)
-
 STATICFILES_DIRS = [
-    os.path.join(STATIC_ROOT, 'personal\\css')
+    os.path.join(STATIC_ROOT, 'profile')
 ]
 
-
-
-
-
-
+# print(STATICFILES_DIRS)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
