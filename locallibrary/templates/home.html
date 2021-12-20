@@ -1,60 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-* {
-  box-sizing: border-box;
-}
+{% extends 'base.html' %}
 
-.left {
-  background-color: #2196F3;
-  padding: 20px;
-  float: left;
-  width: 20%; /* The width is 20%, by default */
-}
+{% block title %}Home{% endblock %}
 
-.main {
-  background-color: #f1f1f1;
-  padding: 20px;
-  float: left;
-  width: 60%; /* The width is 60%, by default */
-}
-
-.right {
-  background-color: #04AA6D;
-  padding: 20px;
-  float: left;
-  width: 20%; /* The width is 20%, by default */
-}
-
-/* Use a media query to add a break point at 800px: */
-@media screen and (max-width: 800px) {
-  .left, .main, .right {
-    width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
-  }
-}
-</style>
-</head>
-<body>
-<p><a href="{% url 'logout' %}">Log Out</a></p>
-<h2>Media Queries</h2>
-<p>Resize the browser window.</p>
-
-<p>Make sure you reach the breakpoint at 800px when resizing this frame.</p>
-
-<div class="left">
-  <p>Left Menu</p>
-</div>
-
-<div class="main">
-  <p>Main Content</p>
-</div>
-
-<div class="right">
-  <p>Right Content</p>
-</div>
-
-</body>
-</html>
-
+{% block content %}
+    <h1>ברוכים הבאים לאתר המתנות הגדול בעולם </h1>
+    <p style="font-size:70px; text-decoration:underline;">!!!מבצע קריסמס</p>
+    <p>עד ל 71% הנחה על כל המוצרים</p>
+    <p>???אז... למה אתם מחכים</p>
+    <p>     הירשמו וקבלו את המתנות שלכם</p>
+    <p style="font-size:30px"> המבצע תקף עד ל 31 לחודש</p>
+    <br />
+    <br />
+    <img src="merryChristmas.jpeg" alt="merry Chrismas" >
+{% endblock %}

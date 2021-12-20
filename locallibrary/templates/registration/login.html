@@ -1,17 +1,11 @@
 <!-- templates/registration/login.html -->
 <!-- templates/base.html -->
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Login</title>
-    {% load static %}
+{% extends 'base.html' %}
 
-    <link rel="stylesheet" href="{%  static  'login.css'  %}">
+{% block title %}Home{% endblock %}
 
-
-<body>
+{% block content %}
 <div class="login">
     <div class="form">
         <form method="post" class="login-form">
@@ -23,10 +17,5 @@
         </form>
     </div>
 </div>
-</body>
-</html>
-
-
-
-
+{% endblock %}
 
