@@ -1,0 +1,179 @@
+
+td {
+    font-family:Dorian;
+    font-size: xx-large;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    /*background-color:white;*/
+
+}
+input[type=radio] {
+    -webkit-appearance: none;
+    width: 20px;
+    font-family:Dorian;
+    height: 20px;
+    background: white;
+    border-radius: 20px;
+    border: 2px solid #555;
+
+}
+
+    input[type=radio]:checked {
+        background: red;
+    }
+    input[type=radio]:focus {
+        outline:none;
+    }
+
+
+th {
+    font-size: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    background-color: #90ee90;
+    border: solid 1px #90ee90;
+    color: #336B6B;
+    padding: 10px;
+    text-align: center;
+    text-shadow: 1px 1px 1px #fff;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    font-family:Dorian;
+}
+tr {
+    margin: 2px;
+
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid green;
+    border-radius: 4px;
+    display: block;
+    font-size: x-large;
+}
+
+input[type=button] {
+    font-weight: bold;
+    width: 200px;
+    height: 50px;
+    color: white;
+    background-color: #24b441;
+    font-size: x-large;
+    font-family: Dorian;
+}
+
+input[type=submit] {
+    background-color: #24b441;
+    color: white;
+    font-size: xx-large;
+    font-weight: bold;
+    height: 50px;
+    width: 200px;
+    font-family: Dorian;
+}
+
+table {
+    background-color: white;
+    border: solid;
+    align-self: center;
+    direction: rtl;
+
+}
+
+
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: solid;
+    border-width: 2px;
+}
+
+
+
+
+h1 {
+    text-align: center;
+    color: #d4be1c;
+    font-size: 70px;
+    font-weight: bold;
+    font-family:Dorian;
+}
+
+p {
+    /*color: #f7e2be;*/
+    color: #d4be1c;
+    display: block;
+    font-size: 50px;
+    text-align: center;
+}
+
+#gender, #passConf, #address, #mail, #phone, #db, #fName, #id, #pass, #un, #lName {
+    background-color: white;
+    font-size: smaller;
+    color: red;
+    text-align: center;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 30px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+html{
+    zoom:80%;
+
+}
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+        .sidenav a {
+            font-size: 18px;
+        }
+}
+@font-face {
+    font-family: 'Dorian';
+    src: url('DorianFont.ttf');
+}
+p{
+    font-family:Dorian;
+}
+
