@@ -26,7 +26,6 @@ from django.urls import include
 from django.views.generic.base import TemplateView
 
 urlpatterns += [
-    path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
 
     path('', include('home.urls')),

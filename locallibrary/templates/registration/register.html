@@ -1,22 +1,59 @@
-<!-- templates/registration/login.html -->
-<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- templates/registration/login.html -->
-<!-- templates/base.html -->
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Linking Css file  -->
+    <link href="{% static 'login.css' %}" rel="stylesheet"/>
+    <!-- Linking Js file  -->
+    <!-- Title  -->
+    <title>Devstegram</title>
 
-{% extends 'base.html' %}
+</head>
 
-{% block title %}Home{% endblock %}
+<body>
 
-{% block content %}
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
+
 <div class="login">
-    <div class="form">
-        <form method="POST">
+    <div id="wrapper">
+        <form action="/accounts/register/" method="POST">
             {% csrf_token %}
-            {{ register_form.as_p }}
-            <button class="btn btn-primary" type="submit">Register</button>
+            {{form}}
+
+            <div class="main-content">
+                <div class="header">
+                    <img src="https://i.imgur.com/zqpwkLQ.png"/>
+                </div>
+                <div class="l-part">
+                    <input type="text" name="username" placeholder="Username" maxlength="150" autofocus="" required="" id="id_username" class="input-field">
+                    <!--<input type="text" name="username" placeholder="username" class="input-1"/> -->
+
+                    <input type="email" name="email" required="" placeholder="Email" id="id_email" class="input-field">
+
+                    <div class="overlap-text">
+                        <input type="password" placeholder="Password" name="password1" autocomplete="new-password" required="" id="id_password1" class="input-field">
+                        <!--<input type="password" name="password" placeholder="password" class="input-2"/> -->
+                    </div>
+
+                    <div class="overlap-text">
+                        <input type="password" placeholder="Confirm Password" name="password2" autocomplete="new-password" required="" id="id_password2" class="input-field">
+                        <!--<input type="password" name="password" placeholder="password" class="input-2"/> -->
+                    </div>
+
+                    <input type="submit" value="Sign up" class="btn"/>
+                </div>
+            </div>
+            <div class="sub-content">
+                <div class="s-part">
+                    Have an account?<a href="/accounts/login">Log in</a>
+                </div>
+            </div>
         </form>
-        <p style="text-align:center">If you already have an account, <a href="/accounts/login">login</a> instead.</p>
     </div>
-</div>
-{% endblock %}
+</body>
+</html>
+

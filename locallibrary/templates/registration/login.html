@@ -1,21 +1,47 @@
-<!-- templates/registration/login.html -->
-<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
 
-{% extends 'base.html' %}
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Linking Css file  -->
+    <link href="{% static 'login.css' %}" rel="stylesheet"/>
+    <!-- Linking Js file  -->
+    <!-- Title  -->
+    <title>Devstegram</title>
 
-{% block title %}Home{% endblock %}
+</head>
 
-{% block content %}
-<div class="login">
-    <div class="form">
-        <form method="post" class="login-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <p style="text-align:center">Don't have an account? <a href="/accounts/register">register</a> instead.</p>
+<body>
 
-            <button type="submit">Log In</button>
-        </form>
-    </div>
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
+
+<div id="wrapper">
+    <form action="/accounts/login/" method="POST">
+        {% csrf_token %}
+        {{form}}
+
+        <div class="main-content">
+            <div class="header">
+                <img src="https://i.imgur.com/zqpwkLQ.png"/>
+            </div>
+            <div class="l-part">
+                <input type="text" name="username" placeholder="username" class="input-field"/>
+                <div class="overlap-text">
+                    <input type="password" name="password" placeholder="password" class="input-field"/>
+                    <a href="#">Forgot?</a>
+                </div>
+                <input type="submit" value="Log in" class="btn"/>
+            </div>
+        </div>
+        <div class="sub-content">
+            <div class="s-part">
+                Don't have an account?<a href="/accounts/register">Sign up</a>
+            </div>
+        </div>
+    </form>
 </div>
-{% endblock %}
 
+</body>
