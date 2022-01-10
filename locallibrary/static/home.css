@@ -290,6 +290,8 @@ body{
 
 .right-col{
     padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .profile-card{
