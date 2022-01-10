@@ -36,8 +36,8 @@ def server():
 
 def main():
     """health check run thread"""
-    health_thread = Thread(target=server)
-    health_thread.start()
+    # health_thread = Thread(target=server)
+    # health_thread.start()
 
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'locallibrary.settings')

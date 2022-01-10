@@ -15,8 +15,9 @@ body {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+
 }
-.wrapper {
+.base-wrapper {
   position: relative;
   width: 975px;
   height: 54px;
