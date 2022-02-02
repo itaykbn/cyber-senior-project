@@ -4,12 +4,16 @@
 
 {% block content_header %}
 {% load static %}
-
+<style>
+    .home
+    {
+        background-color : grey;
+    }
+</style>
 <link href="{% static 'home.css' %}" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
 {% block content %}
-
 <br><br><br><br>
 <!--<nav class="navbar">
     <div class="nav-wrapper">
@@ -65,7 +69,7 @@
         </section>
         -->
 
-        <section class="main">
+        <section class="main" style="justify-content: right;">
             <div class="home-wrapper">
                 <div class="left-col">
                     <div class="post">
@@ -86,7 +90,8 @@
                             </div>
                             <p class="likes">1,012 likes</p>
                             <p class="description"><span>username </span> Lorem ipsum dolor sit amet consectetur,
-                                adipisicing elit. Pariatur tenetur veritatis placeat, molestiae impedit aut provident
+                                adipisicing elit. Pariatur tenetur veritatis placeat, molestiae impedit aut
+                                provident
                                 eum quo natus molestias?</p>
                             <p class="post-time">2 minutes ago</p>
                         </div>
@@ -114,7 +119,8 @@
                             </div>
                             <p class="likes">1,012 likes</p>
                             <p class="description"><span>username </span> Lorem ipsum dolor sit amet consectetur,
-                                adipisicing elit. Pariatur tenetur veritatis placeat, molestiae impedit aut provident
+                                adipisicing elit. Pariatur tenetur veritatis placeat, molestiae impedit aut
+                                provident
                                 eum quo natus molestias?</p>
                             <p class="post-time">2 minutes ago</p>
                         </div>
@@ -130,7 +136,7 @@
     </div>
 
     <div class="right-box">
-        <section class="main">
+        <section class="main" style="justify-content: center">
             <div class="home-wrapper">
                 <div class="right-col">
                     <div class="profile-card">

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content_header %}
+{% load static %}
+<style>
+    .create
+    {
+        background-color : grey;
+    }
+</style>
+<link href="{% static 'create.css' %}" rel="stylesheet" type="text/css"/>
+<script src="{% static 'create.js' %}"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.3/cropper.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.3/cropper.js"></script>
+
+
+
+{% endblock %}
+
+{% block content %}
+<div class="file-input">
+
+
+    <br><br><br><br>
+    <div class="upload-window">
+        <table class="upload-table">
+            <tr>
+                <td>
+                    <input class="file" type="file" id="fileInput" accept="image/*"/>
+                    <label for="fileInput">
+                        Select from computer
+                    </label>
+                </td>
+
+                <td>
+                    <input type="button" id="btnCrop" value="Crop"/>
+                </td>
+
+                <td>
+                    <input type="button" id="btnRestore" value="Restore"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <canvas id="canvas">
+                            Your browser does not support the HTML5 canvas element.
+                        </canvas>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <br><br>
+                    <div id="result"></div>
+                </td>
+            </tr>
+
+
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}
