@@ -17,7 +17,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.3/cropper.js"></script>
 
 
-
 {% endblock %}
 
 {% block content %}
@@ -25,22 +24,20 @@
 
 
     <br><br><br><br>
+
     <div class="upload-window">
-        <table class="upload-table">
+        <table id="upload-table" class="upload-table">
             <tr>
                 <td>
-                    <input class="file" type="file" id="fileInput" accept="image/*"/>
-                    <label for="fileInput">
-                        Select from computer
-                    </label>
-                </td>
+                  <span>
+                        <input class="file" type="file" id="fileInput" accept="image/*"/>
+                        <label id="fileInputLabel" class="file-label" for="fileInput">
+                            Select from computer
+                        </label>
+                        <br>
 
-                <td>
-                    <input type="button" id="btnCrop" value="Crop"/>
-                </td>
-
-                <td>
-                    <input type="button" id="btnRestore" value="Restore"/>
+                        <input style="display:none" class="sqdOP yWX7d y3zKF" type="button" id="btnCrop" value="Next" />
+                  </span>
                 </td>
             </tr>
             <tr>
@@ -52,16 +49,40 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <div class="selectWrapper">
+                        <select class="selectBox" id="select-ratio" style="display:none">
+                            <option value="1|1">1:1</option>
+                            <option value="4|5">4:5</option>
+                            <option value="16|9">16:9</option>
+                        </select>
+                    </div>
 
+                </td>
+            </tr>
+        </table>
+
+        <table class="upload-table" id="description-table" style="display:none">
             <tr>
                 <td>
                     <br><br>
-                    <div id="result"></div>
+                    <div class="preview" id="result"></div>
+                </td>
+                <td>
+                    <form id="description-form" action="/create/select/" method="post">
+                        {% csrf_token %}
+                        <label for="description">Description: </label>
+                        <textarea id="description" name="description" aria-label="Write a caption..."
+                                  placeholder="Write a caption..." class="lFzco" autocomplete="off"
+                                  spellcheck="false"></textarea>
+                        <input type="hidden" name="uri" id="uri" value="">
+                        <input class="sqdOP yWX7d    y3zKF     " type="submit" value="share">
+                    </form>
                 </td>
             </tr>
-
-
         </table>
+
 
     </div>
 </div>
