@@ -19,7 +19,6 @@ def select(request):
     if request.method == "POST":
         form = ImageForm(request.POST)
         if form.is_valid():
-
             uri = form.cleaned_data['uri']
             description = form.cleaned_data['description']
 
@@ -39,12 +38,11 @@ def style(request):
 
 
 # messenger
-@login_required(login_url='/accounts/login')
-def messenger(request):
-    create_template()
-    return render(request=request, template_name="messenger.html")
-
 
 def create_template():
     post_shell = render_to_string("post_temp.html")
-    print(post_shell)
+
+    #get data_from_db
+
+    post = post_shell
+    return post

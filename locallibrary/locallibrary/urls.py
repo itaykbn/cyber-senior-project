@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
@@ -28,6 +27,7 @@ from django.views.generic.base import TemplateView
 
 urlpatterns += [
     path('accounts/', include('accounts.urls')),
+    path('direct/', include('direct.urls')),
 
     path('', include('home.urls')),
 ]

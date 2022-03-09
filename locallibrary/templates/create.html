@@ -9,6 +9,7 @@
     {
         background-color : grey;
     }
+
 </style>
 <link href="{% static 'create.css' %}" rel="stylesheet" type="text/css"/>
 <script src="{% static 'create.js' %}"></script>
@@ -36,7 +37,7 @@
                         </label>
                         <br>
 
-                        <input style="display:none" class="sqdOP yWX7d y3zKF" type="button" id="btnCrop" value="Next" />
+                        <input style="display:none" class="sqdOP yWX7d y3zKF" type="button" id="btnCrop" value="Next"/>
                   </span>
                 </td>
             </tr>
@@ -51,12 +52,14 @@
             </tr>
             <tr>
                 <td>
-                    <div class="selectWrapper">
-                        <select class="selectBox" id="select-ratio" style="display:none">
-                            <option value="1|1">1:1</option>
-                            <option value="4|5">4:5</option>
-                            <option value="16|9">16:9</option>
-                        </select>
+                    <div id="select-wrapper" style="display:none">
+                        <div class="selectWrapper">
+                            <select class="selectBox" id="select-ratio">
+                                <option value="1|1">1:1</option>
+                                <option value="4|5">4:5</option>
+                                <option value="16|9">16:9</option>
+                            </select>
+                        </div>
                     </div>
 
                 </td>

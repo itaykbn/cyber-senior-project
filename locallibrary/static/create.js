@@ -33,7 +33,7 @@ $('#fileInput').on( 'change', function(){
         reader.onload = function(evt) {
            $('#fileInput').css('display', 'none');
            $('#fileInputLabel').css('display', 'none');
-           $('#select-ratio').css('display', 'block');
+           $('#select-wrapper').css('display', 'block');
            $('#btnCrop').css('display', 'block');
 
            var img = new Image();
