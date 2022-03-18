@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Linking Css file  -->
     <link href="{% static 'login.css' %}" rel="stylesheet"/>
+    <script src="{% static 'auth.js' %}"></script>
 
     <!-- Linking Js file  -->
     <!-- Title  -->
@@ -22,12 +23,19 @@
 
 <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
 
+{% if form.errors %}
+  {% for error in form.non_field_errors %}
+      <div class="alert alert-danger">
+          <strong>{{ error|escape }}</strong>
+      </div>
+  {% endfor %}
+{% endif %}
+
+
 <div class="login">
     <div id="wrapper">
-        <form action="/accounts/register/" method="POST">
+        <form action="/accounts/register/" method="POST" onsubmit="return RegistrationFormValidation();">
             {% csrf_token %}
-            {{form}}
-
             <div class="main-content">
                 <div class="header">
                     <img src="{% static 'imgs/logoImage.png' %}"/>
@@ -36,6 +44,12 @@
                     <input type="text" name="username" placeholder="Username" maxlength="150" autofocus="" required=""
                            id="id_username" class="input-field">
                     <!--<input type="text" name="username" placeholder="username" class="input-1"/> -->
+
+                    <input type="text" name="first_name" placeholder="First Name" maxlength="150" autofocus="" required=""
+                           id="id_first_name" class="input-field">
+
+                    <input type="text" name="last_name" placeholder="Last Name" maxlength="150" autofocus="" required=""
+                           id="id_last_name" class="input-field">
 
                     <input type="email" name="email" required="" placeholder="Email" id="id_email" class="input-field">
 

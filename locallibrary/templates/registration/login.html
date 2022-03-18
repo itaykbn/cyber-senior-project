@@ -11,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Linking Css file  -->
     <link href="{% static 'login.css' %}" rel="stylesheet"/>
+    <script src="{% static 'auth.js' %}"></script>
+
 
     <!-- Linking Js file  -->
     <!-- Title  -->
@@ -22,19 +24,26 @@
 
 <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
 
+{% if form.errors %}
+  {% for error in form.non_field_errors %}
+      <div class="alert alert-danger">
+          <strong>{{ error|escape }}</strong>
+      </div>
+  {% endfor %}
+{% endif %}
+
 <div id="wrapper">
-    <form action="/accounts/login/" method="POST">
+    <form action="/accounts/login/" method="POST" onsubmit="return LoginFormValidation()">
         {% csrf_token %}
-        {{form}}
 
         <div class="main-content">
             <div class="header">
                 <img src="{% static 'imgs/logoImage.png' %}"/>
             </div>
             <div class="l-part">
-                <input type="text" name="username" placeholder="Username" class="input-field"/>
+                <input id="id_username" type="text" name="username" placeholder="Username" class="input-field"/>
                 <div class="overlap-text">
-                    <input type="password" name="password" placeholder="Password" class="input-field"/>
+                    <input id="id_password" type="password" name="password" placeholder="Password" class="input-field"/>
                     <a href="#">Forgot?</a>
                 </div>
                 <input type="submit" value="Log in" class="btn"/>

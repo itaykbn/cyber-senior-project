@@ -16,9 +16,11 @@ def register_request(request):
 
             messages.success(request, "Registration successful.")
             return redirect("/accounts/login/")
-        messages.error(request, "Unsuccessful registration. Invalid information.")
-    form = ResgistrationForm()
-    return render(request=request, template_name="registration/register.html", context={"register_form": form})
+    else:
+        form = ResgistrationForm()
+        # messages.error(request, "Unsuccessful registration. Invalid information.")
+    form_dict = {"form": form}
+    return render(request=request, template_name="registration/register.html", context=form_dict)
 
 
 def login_request(request):
@@ -31,15 +33,14 @@ def login_request(request):
             messages.success(request, "Login successful.")
             print("hello")
             return redirect("/")
-        else:
-            print(form.errors)
-            print(form)
-            messages.error(request, "Unsuccessful registration. Invalid information.")
+    else:
+        #print(form.errors)
+        messages.error(request, "Unsuccessful registration. Invalid information.")
+        form = AuthenticationForm()
 
-    print("hello")
-    form = ResgistrationForm(AuthenticationForm(data=request.POST))
+    form_dict = {"form": form}
 
-    return render(request=request, template_name="registration/login.html", context={"login_form": form})
+    return render(request=request, template_name="registration/login.html", context=form_dict)
 
 
 def logout_request(request):
