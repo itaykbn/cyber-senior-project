@@ -1,5 +1,7 @@
 import datetime
 import os
+import time
+from django.utils import timezone
 
 from django import forms
 from django.apps import apps
@@ -25,8 +27,8 @@ class PostForm(forms.ModelForm):
         post.img = img_path
         post.caption = self.cleaned_data["description"]
 
-        #print("-------------user" + post.user)
-        post.published = datetime.datetime.now()
+        # print("-------------user" + post.user)
+        post.published = timezone.now()
         post.user = UserDB.objects.get(id=self.cleaned_data["user_id"])
 
         if commit:
@@ -37,14 +39,16 @@ class PostForm(forms.ModelForm):
 def save_img(uri):
     from binascii import a2b_base64
 
-    save_dir = str(settings.LOCAL_STORE) + "\\imgs"
+    save_dir = str(settings.MEDIA_ROOT) + "/imgs"
+
+    url_DB = str(settings.MEDIA_URL) + "imgs"
 
     binary_data = a2b_base64(uri)
 
     name = f"sociocode_{str(datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))}{len(os.listdir(save_dir))}"
 
-    fd = open(f'{save_dir}\\{name}.png', 'wb')
+    fd = open(f'{save_dir}/{name}.png', 'wb')
     fd.write(binary_data)
     fd.close()
 
-    return f'{save_dir}\\{name}.png'
+    return f'{url_DB}/{name}.png'

@@ -1,3 +1,88 @@
+var HTMLS = [];
+window.addEventListener('load', (event) => {
+    HTMLS = AJAX_query();
+
+
+    load_images();
+    //alert("balls")
+})
+
+function AJAX_query(){
+        var tmp = null;
+        $.ajax({
+        type: 'GET',
+        async: false,
+        url: '/ajax_request/',
+        dataType: "json",
+        success: function(data){
+            tmp = data["HTMLS"]
+
+        },//success
+
+        error: function (data) {
+        // alert the error if any error occured
+
+        }
+    });
+
+    return tmp
+
+
+};//AJAX_query
+       /* error: function(){
+            if (textStatus == 'timeout') {
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                    //try again
+                    $.ajax(this);
+                    return;
+                }
+                return;
+            }
+            if (xhr.status == 500) {
+                alert("error 500")
+            } else {
+                alert("error balls are heavy")
+            }
+            }//error*/
+   //.ajax
+
+
+
+window.addEventListener('scroll',() => {
+    if(window.scrollY + window.innerHeight >= document.documentElement.scrollHeight){
+        if(HTMLS.length > 0)
+        {
+            load_images();
+        }
+        else
+        {
+            //alert("here");
+            HTMLS = AJAX_query();
+
+            load_images();
+        }
+    }
+})
+
+
+
+
+function load_images(num_images = 2)
+{
+    while(HTMLS.length > 0)
+    {
+        const post_panel = $("#post_pane");
+        post_pane.insertAdjacentHTML("beforeend",HTMLS[0]);
+        HTMLS.shift();
+        console.log("brosky" + 0)
+        console.log("hood\n" + HTMLS[0])
+    }
+
+
+}
+
+
 let togglestatus = true;
 document.addEventListener("DOMContentLoaded", (event) => {
   console.log("hi");

@@ -6,7 +6,7 @@ from django import forms
 
 from django.conf import settings
 
-default_pfp = str(settings.LOCAL_STORE) + "\\profile_pics\\default.png"
+default_pfp = str(settings.MEDIA_URL) + "profile_pics/default.png"
 
 
 def create_id():

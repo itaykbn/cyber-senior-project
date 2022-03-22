@@ -1,3 +1,66 @@
+HTMLS = [];
+
+
+function AJAX_query(){
+    $.ajax({
+        type: 'GET',
+        url: '/ajax_request/',
+        datatype: "json",
+        tryCount : 0,
+        retryLimit : 3,
+        success: function(data){
+                HTMLS = data["HTMLS"]
+                alert(data)
+        },//success
+        error: function(){
+            if (textStatus == 'timeout') {
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                    //try again
+                    $.ajax(this);
+                    return;
+                }
+                return;
+            }
+            if (xhr.status == 500) {
+                alert("error 500")
+            } else {
+                alert("error balls are heavy")
+            }
+            }//error
+    });//.ajax
+};//AJAX_query
+
+
+window.addEventListener('scroll',() => {
+    if(window.scrollY + window.innerHeight >= document.documentElement.scrollHeight){
+        if(HTMLS.length > 0)
+        {
+            load_images()
+        }
+        else
+        {
+            AJAX_query()
+            load_images()
+        }
+    }
+})
+
+
+function load_images(num_images = 2)
+{
+    let i = 0
+    while(i<num_images)
+    {
+        const post_panel = $("#post_pane")
+
+        post_pane.insertAdjacentHTML("beforeend",post_panel)
+    }
+
+
+}
+
+
 let togglestatus = true;
 document.addEventListener("DOMContentLoaded", (event) => {
   console.log("hi");

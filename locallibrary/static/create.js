@@ -48,7 +48,9 @@ $('#fileInput').on( 'change', function(){
                 // Get a string base 64 data url
                 var croppedImageDataURL = canvas.cropper('getCroppedCanvas').toDataURL("image/png"); 
                 $result.append( $('<img style="width:450px;height:auto;border: 3px solid black;padding:5px;background:transparent;">').attr('src', croppedImageDataURL) );
-                $('#uri').val(croppedImageDataURL.replace("data:image/jpeg;base64,",""));
+
+                uri_string = croppedImageDataURL.substring(croppedImageDataURL.indexOf(",") +1);
+                $('#uri').val(uri_string);
 
                 $('#upload-table').css('display', 'none');
 

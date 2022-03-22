@@ -37,7 +37,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 
-LOCAL_STORE = str(BASE_DIR.joinpath('local_store'))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -143,6 +142,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(STATIC_ROOT, 'profile')
 ]
+
+MEDIA_URL = "/local_store/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'local_store')
+
+
+
+
+
 
 # print(STATICFILES_DIRS)
 # Default primary key field type
