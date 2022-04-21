@@ -37,7 +37,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,7 +48,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'rest_framework',
     'django_mysql',
-    'accounts'
+    'accounts',
 
     # 'crispy_forms',
 ]
@@ -101,6 +100,34 @@ DATABASES = {
     }
 }
 
+CLICKHOUSE_DATABASES = {
+    # Connection name to refer in using(...) method
+    'default': {
+        'db_name': 'Analytics',
+        'username': 'itay',
+        'password': 'pronto'
+    }
+}
+CLICKHOUSE_REDIS_CONFIG = {
+    'host': '127.0.0.1',
+    'port': 8123,
+    'db': 8,
+    'socket_timeout': 10
+}
+CLICKHOUSE_CELERY_QUEUE = 'clickhouse'
+
+# If you have no any celerybeat tasks, define a new dictionary
+# More info: http://docs.celeryproject.org/en/v2.3.3/userguide/periodic-tasks.html
+from datetime import timedelta
+
+CELERYBEAT_SCHEDULE = {
+    'clickhouse_auto_sync': {
+        'task': 'django_clickhouse.tasks.clickhouse_auto_sync',
+        'schedule': timedelta(seconds=2),  # Every 2 seconds
+        'options': {'expires': 1, 'queue': CLICKHOUSE_CELERY_QUEUE}
+    }
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -146,10 +173,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = "/local_store/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'local_store')
 
-
-
-
-
+DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
 # print(STATICFILES_DIRS)
 # Default primary key field type

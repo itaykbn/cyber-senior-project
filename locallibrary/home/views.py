@@ -1,66 +1,108 @@
 import datetime
 from uuid import uuid4
 
-import pytz
 from django.apps import apps
-from django.http import HttpResponse, JsonResponse
-from django.template import RequestContext
-from django.utils import timezone
-
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-from django.utils.timezone import make_aware
-from rest_framework.decorators import api_view
+from django.utils import timezone
 
 from .forms import PostForm
+from .process_image import process_image
 
 PostDB = apps.get_model('home', 'Post')
 UserDB = apps.get_model('accounts', 'User')
 
+post_chunk = 20
 
-def get_recommendation():
-    return ["2022320f8c8ffd", "202232019390c2", "2022318bb8458a"]
+
+def create_post_list(index, posts, post_type):
+    new_posts = [None] * 20
+
+    n_objects = posts.count()
+
+    print("--------------------objects " + str(post_type))
+    for i in range(post_chunk):
+        if index + i >= n_objects:
+            if post_type == "home":
+                print("--------------------index in " + str(i))
+                overlapped_index = (index + i) % n_objects
+                new_posts[i] = posts[overlapped_index]
+        else:
+            print("--------------------index out " + str(i))
+            new_posts[i] = posts[index + i]
+
+    return new_posts
 
 
 def ajax_query(request):
     if request.method == 'GET':
-        post_ids = get_recommendation()
+        index = request.GET.get('index', None)
+        print("------------------index_number - - - - " + index)
+
+        create_post = None
+        posts = None
+        finish = 0
+
+        if request.GET.get('type', None) == "home":
+
+            create_post = create_home_post
+            posts = create_post_list(int(index), PostDB.objects.all(), "home")
+
+        elif request.GET.get('type', None) == "profile":
+            create_post = create_user_post
+            post_list = PostDB.objects.filter(user_id=request.user.id).order_by('published')
+            posts = create_post_list(int(index), post_list, "profile")
+
+            if int(index) + post_chunk > post_list.count():
+                finish = 1
 
         htmls = []
 
-        for post_id in post_ids:
-            # print(create_post_by_id(post_id))
-            htmls.append(create_post_by_id(post_id))
+        for post in posts:
+            if post is not None:
+                htmls.append(create_post(post))
 
-        context = {'HTMLS': htmls}
+        context = {'HTMLS': htmls, 'finish': finish}
 
-        print(context, len(context['HTMLS']))
+        # print(context, len(context['HTMLS']))
 
         return JsonResponse(context)
 
 
-@login_required(login_url='/accounts/login')
-def home(request):
-    id1 = "2022318bb8458a"
-    id2 = "2022320f8c8ffd"
+def cum_on_all():
+    path_root = "C:\\Users\\ItayK\\Documents\\dev\\python\\cyber-senior-project\\locallibrary\\"
+    PostDB = apps.get_model('home', 'Post')
+    for post in PostDB.objects.all():
+        img_path = post.img
+        categories = process_image(path_root + img_path.replace("/", "\\"))
+        save_into_categories(categories, post.id)
 
-    post_html = create_post_by_id(id2)
 
-    return render(request=request, template_name="home.html")
+def save_into_categories(categories, post_id):
+    CategoriesDB = apps.get_model('home', 'Categories')
+    PostDB = apps.get_model('home', 'Post')
+
+    categories = categories.split("#")
+    categories = list(filter(lambda a: a != "", categories))
+    print(categories)
+
+    for categorie in categories:
+        post = PostDB.objects.get(id=post_id)
+        CategoriesDB.objects.create(id=f"{post.id}|{categorie}", post=post, categorie=categorie)
 
 
 # create
 @login_required(login_url='/accounts/login')
-@api_view(['GET', 'POST'])
 def select(request):
+    user = request.user
     # naive = datetime.datetime(1999, 4, 6, 12, 4, 2)
     # get_delta_time(make_aware(naive, timezone=pytz.timezone("UTC")))
     # get_delta_time(PostDB.objects.get(id="2022318bb8458a").published)
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
-            uri = form.cleaned_data['uri']
             description = form.cleaned_data['description']
             form.cleaned_data['user_id'] = request.user.id
             form.save()
@@ -74,61 +116,86 @@ def select(request):
     else:
         form = PostForm()
     context = {
-        'form': form
+        'form': form,
+        "profile_pic": user.profile_pic
     }
     return render(request, "create.html", context)
 
 
-def style(request):
-    pass
+# home
+
+def hood():
+    from .click_house_link import ClickHouseService
+
+    click_service = ClickHouseService.instance()
+
+    click_service.execute('CREATE TABLE user_activity ('
+                          'likes UInt8,'
+                          'step_in UInt8, '
+                          'category String, '
+                          'post_id String, '
+                          'user_id String) ENGINE = MergeTree '
+                          'PARTITION BY tuple() ORDER BY (user_id,post_id,step_in)')
 
 
-# messenger
+@login_required(login_url='/accounts/login')
+def home(request):
+    user = request.user
 
-def create_template():
-    post_shell = render_to_string("post_temp.html")
+    # hood()
 
-    # get data_from_db
+    context = {
+        "profile_pic": user.profile_pic
+    }
 
-    post = post_shell
-    return post
+    return render(request=request, template_name="home.html", context=context)
 
 
-def create_post_by_id(post_id):
-    post_obj = PostDB.objects.get(id=post_id)
-    # print("hooooooooooooooooooooood----------------------------------------------" + str(post_obj.user_id))
-    user_obj = UserDB.objects.get(id=post_obj.user_id)
+def redirect_to_post_page(request, post_id=None):
+    if PostDB.objects.filter(id=post_id).exists():
+        user = request.user
+        print("im in redirect_to_post_page ")
+        print(request.user.profile_pic)
+        base_html = render_to_string("post_preview.html")
 
-    # plant content
-    # post_data
-    post_img_path = post_obj.img
-    post_caption = post_obj.caption
-    post_uploaded = get_delta_time(post_obj.published)
+        html = create_home_post(PostDB.objects.get(id=post_id))
 
-    # user_data
+        div_code_1 = '''<div class="profile-img">
+                <!-- Profile icon start  -->
+                <div> <span style="width:22px;height:22px; border: 1px solid #fafafa;">
+                            <img style="width:22px;height:22px;border-radius: 100%;" src=""
+                                 alt="">
+                        </span>
+                </div>'''
 
-    user_username = user_obj.username
-    user_pfp_path = user_obj.profile_pic
+        replace_div_code_1 = f'''<div class="profile-img">
+                <!-- Profile icon start  -->
+                <div> <span style="width:22px;height:22px; border: 1px solid #fafafa;">
+                            <img style="width:22px;height:22px;border-radius: 100%;" src="{user.profile_pic}"
+                                 alt="">
+                        </span>
+                </div>'''
 
-    post_html = render_to_string("post_temp.html")
+        div_code_2 = '''<a href="/profile/">Profile</a>'''
 
-    replace_array = [user_pfp_path, user_username, post_img_path, 0, user_username, post_caption, post_uploaded]
+        replace_div_code_2 = f'''<a href="/profile/{user.username}">Profile</a>'''
 
-    # print(replace_array)
+        print(f"\n\n\n helllllo {replace_div_code_2} \n\n\n")
 
-    for item in replace_array:
-        # print(item)
-        post_html = post_html.replace("{}", str(item), 1)
+        base_html = base_html.replace("{post stuff}", html)
+        base_html = base_html.replace(div_code_1, replace_div_code_1)
+        base_html = base_html.replace(div_code_2, replace_div_code_2)
 
-        # print(post_html)
+        print(base_html)
 
-    return post_html
+        # print(base_html)
+
+        return HttpResponse(base_html)
+    return redirect('/')
 
 
 def get_delta_time(publish_time):
     time_delta = timezone.now() - publish_time
-
-    delta_msg = ""
 
     days = time_delta.days
     seconds = time_delta.seconds
@@ -159,3 +226,96 @@ def get_delta_time(publish_time):
 def create_id():
     now = datetime.datetime.now()
     return str(now.year) + str(now.month) + str(now.day) + str(uuid4())[:7]
+
+
+# profile
+
+@login_required(login_url='/accounts/login')
+def profile(request, username=None):
+    user = request.user
+    if request.user.username == username:
+        context = {
+            "profile_pic": user.profile_pic,
+            "username": user.username,
+            "posts": 0,
+            "followers": 0,
+            "following": 0,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "bio": user.bio
+        }
+
+        return render(request=request, template_name="profile.html", context=context)
+
+    return redirect('/')
+
+
+@login_required(login_url='/accounts/login')
+def edit_profile(request, username=None):
+    user = request.user
+    context = {
+        "profile_pic": user.profile_pic,
+        "username": user.username,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "bio": user.bio
+    }
+    if request.method == "POST":
+        form = ResgistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+
+            return redirect("/accounts/login/")
+    else:
+        form = ResgistrationForm()
+        # messages.error(request, "Unsuccessful registration. Invalid information.")
+    form_dict = {"form": form}
+    return render(request=request, template_name="edit_profile.html", context=context)
+
+
+
+def create_user_post(user_obj):
+    image = user_obj.img
+    likes = 0
+    comments = 0
+
+    post_html = render_to_string("profile_post_temp.html")
+
+    replace_array = [image, likes, comments]
+
+    for item in replace_array:
+        # print(item)
+        post_html = post_html.replace("{}", str(item), 1)
+
+    return post_html
+
+
+def create_home_post(post_obj):
+    # print("hooooooooooooooooooooood----------------------------------------------" + str(post_obj.user_id))
+    user_obj = UserDB.objects.get(id=post_obj.user_id)
+
+    # plant content
+    # post_data
+    post_img_path = post_obj.img
+    post_caption = post_obj.caption
+    post_uploaded = get_delta_time(post_obj.published)
+
+    # user_data
+
+    user_username = user_obj.username
+    user_pfp_path = user_obj.profile_pic
+
+    post_html = render_to_string("post_temp.html")
+
+    replace_array = [post_obj.id, user_pfp_path, user_username, post_img_path, 0, user_username, post_caption,
+                     post_uploaded]
+
+    # print(replace_array)
+
+    for item in replace_array:
+        # print(item)
+        post_html = post_html.replace("{}", str(item), 1)
+
+        # print(post_html)
+
+    return post_html

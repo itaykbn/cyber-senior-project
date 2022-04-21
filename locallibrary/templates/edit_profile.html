@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+
+    <link rel="icon" type="image/x-icon" href="{% static 'imgs/favicon.ico' %}"/>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Linking Css file  -->
+    <link href="{% static 'edit_profile.css' %}" rel="stylesheet"/>
+    <script src="{% static 'edit_profile.js' %}"></script>
+
+    <!-- Linking Js file  -->
+    <!-- Title  -->
+    <title>Sociocode</title>
+
+</head>
+
+<body>
+
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
+
+{% if form.errors %}
+  {% for error in form.non_field_errors %}
+      <div class="alert alert-danger">
+          <strong>{{ error|escape }}</strong>
+      </div>
+  {% endfor %}
+{% endif %}
+
+
+<div class="login">
+    <div id="wrapper">
+        <form action="/accounts/register/" method="POST" onsubmit="return RegistrationFormValidation();">
+            {% csrf_token %}
+            <div class="main-content">
+                <div class="header">
+                    <img src="{% static 'imgs/logoImage.png' %}"/>
+                </div>
+                <div class="l-part">
+                    <input type="text" name="username" placeholder="Username" maxlength="150" autofocus="" required=""
+                           id="id_username" class="input-field">
+                    <!--<input type="text" name="username" placeholder="username" class="input-1"/> -->
+
+                    <input type="text" name="first_name" placeholder="First Name" maxlength="150" autofocus="" required=""
+                           id="id_first_name" class="input-field">
+
+                    <input type="text" name="last_name" placeholder="Last Name" maxlength="150" autofocus="" required=""
+                           id="id_last_name" class="input-field">
+
+                    <input type="email" name="email" required="" placeholder="Email" id="id_email" class="input-field">
+
+                    <div class="overlap-text">
+                        <input type="password" placeholder="Password" name="password1" autocomplete="new-password"
+                               required="" id="id_password1" class="input-field">
+                        <!--<input type="password" name="password" placeholder="password" class="input-2"/> -->
+                    </div>
+
+                    <div class="overlap-text">
+                        <input type="password" placeholder="Confirm Password" name="password2"
+                               autocomplete="new-password" required="" id="id_password2" class="input-field">
+                        <!--<input type="password" name="password" placeholder="password" class="input-2"/> -->
+                    </div>
+
+                    <input type="submit" value="Sign up" class="btn"/>
+                </div>
+            </div>
+            <div class="sub-content">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from uuid import uuid4
 import datetime
+
+
 from django import forms
 
 from django.conf import settings
@@ -20,3 +22,4 @@ class User(AbstractUser):
     id = models.CharField(primary_key=True, default=create_id, editable=False, max_length=100)
     profile_pic = models.CharField(max_length=200, default=default_pfp)
     bio = models.CharField(max_length=800)
+    categories = models.CharField(max_length=200, null=True)

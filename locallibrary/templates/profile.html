@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content_header %}
+{% load static %}
+
+<link href="{% static 'profile.css' %}" rel="stylesheet" type="text/css"/>
+<script src="{% static 'profile.js' %}"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.3/cropper.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<header>
+	<br>
+	<br>
+	<div class="container">
+
+		<div class="profile">
+
+			<div class="profile-image">
+
+				<img src="{{profile_pic}}" alt="">
+
+			</div>
+
+			<div class="profile-user-settings">
+
+				<h1 class="profile-user-name">{{username}}</h1>
+
+				<button id="editButton" onclick="window.location.href='/profile/{{user}}/edit/'" class="btn profile-edit-btn">Edit Profile</button>
+
+
+			</div>
+
+			<div class="profile-stats">
+
+				<ul>
+					<li><span class="profile-stat-count">{{posts}}</span> posts</li>
+					<li><span class="profile-stat-count">{{followers}}</span> followers</li>
+					<li><span class="profile-stat-count">{{following}}</span> following</li>
+				</ul>
+
+			</div>
+
+			<div class="profile-bio">
+
+				<p><span class="profile-real-name">{{first_name}} {{last_name}}</span>{{bio}}</p>
+
+			</div>
+
+		</div>
+		<!-- End of profile section -->
+
+	</div>
+	<!-- End of container -->
+
+</header>
+
+<main>
+
+	<div class="container">
+
+		<div id="gallery" class="gallery">
+
+		</div>
+		<!-- End of gallery -->
+
+
+		<!--<div class="loader"></div>-->
+
+	</div>
+	<!-- End of container -->
+
+</main>
+
+
+{% endblock %}

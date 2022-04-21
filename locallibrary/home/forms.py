@@ -3,10 +3,18 @@ import os
 import time
 from django.utils import timezone
 
+from .process_image import process_image
+
 from django import forms
 from django.apps import apps
 
 from django.conf import settings
+
+
+class UpdateUserForm(forms.ModelForm):
+    class Meta:
+        model = apps.get_model('home', 'User')
+        fields = ("uri", "description")
 
 
 class PostForm(forms.ModelForm):
@@ -31,9 +39,28 @@ class PostForm(forms.ModelForm):
         post.published = timezone.now()
         post.user = UserDB.objects.get(id=self.cleaned_data["user_id"])
 
+        path_root = settings.MEDIA_ROOT[:-12]
+        categories = process_image(path_root + img_path.replace("/", "\\"))
+
+        # add categories
+
         if commit:
             post.save()
+            save_into_categories(categories, post.id)
         return post
+
+
+def save_into_categories(categories, post_id):
+    CategoriesDB = apps.get_model('home', 'Categories')
+    PostDB = apps.get_model('home', 'Post')
+
+    categories = categories.split("#")
+    categories = list(filter(lambda a: a != "", categories))
+    print(categories)
+
+    for categorie in categories:
+        post = PostDB.objects.get(id=post_id)
+        CategoriesDB.objects.create(id=f"{post.id}|{categorie}", post=post, categorie=categorie)
 
 
 def save_img(uri):

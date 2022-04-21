@@ -306,9 +306,23 @@ body{
 }
 
 
+
 .right-box
 {
     float:right;
     width:33%;
 
 }
+
+
+._8-yf5{display:block;position:relative}
+
+
+.like_button{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+ }
