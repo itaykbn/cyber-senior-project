@@ -32,7 +32,7 @@ def process_image(path):
     if first_label[2] < undetermined:
         labels.append(label[0][1])
 
-    print(labels)
+    # print(labels)
     categories = []
     for label in labels:
         categories.append(get_categorie(label[1]))
@@ -49,7 +49,7 @@ def process_image(path):
 
 def get_categorie(ml_class):
     file_dir = os.getcwd()
-    print(file_dir)
+    # print(file_dir)
     with open(file_dir + '\\home\\classes.json') as json_file:
         dictionary = json.load(json_file)
 

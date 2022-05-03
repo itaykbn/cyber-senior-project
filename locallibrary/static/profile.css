@@ -74,7 +74,7 @@ img {
 
 .profile-image {
     float: left;
-    width: calc(33.333% - 1rem);
+    width: calc(33.333%);
     display: flex;
     justify-content: center;
     align-items: center;
