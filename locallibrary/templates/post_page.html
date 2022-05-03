@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content_header %}
+{% load static %}
+<style>
+.resize
+{
+    width:33%;
+    height: 33%;
+    margin: auto;
+
+}
+</style>
+<link href="{% static 'home.css' %}" rel="stylesheet" type="text/css"/>
+<script src="{% static 'main.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+<br><br><br><br>
+<div class="resize">
+{{post|safe}}
+</div>
+
+{% endblock %}

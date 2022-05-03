@@ -27,8 +27,6 @@ from django.views.generic.base import TemplateView
 
 urlpatterns += [
     path('accounts/', include('accounts.urls')),
-    path('direct/', include('direct.urls')),
-
     path('', include('home.urls')),
 ]
 

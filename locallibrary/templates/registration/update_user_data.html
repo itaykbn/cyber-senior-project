@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content_header %}
+<style>
+            body {
+      background: whitesmoke;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .container {
+      max-width: 960px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 20px;
+      text-align: center;
+      margin: 20px 0 20px;
+    }
+    h1 small {
+      display: block;
+      font-size: 15px;
+      padding-top: 8px;
+      color: gray;
+    }
+    .avatar-upload {
+      position: relative;
+      max-width: 205px;
+      margin: 50px auto;
+    }
+    .avatar-upload .avatar-edit {
+      position: absolute;
+      right: 12px;
+      z-index: 1;
+      top: 10px;
+    }
+    .avatar-upload .avatar-edit input {
+      display: none;
+    }
+    .avatar-upload .avatar-edit input + label {
+      display: inline-block;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 0;
+      border-radius: 100%;
+      background: #FFFFFF;
+      border: 1px solid transparent;
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      font-weight: normal;
+      transition: all 0.2s ease-in-out;
+    }
+    .avatar-upload .avatar-edit input + label:hover {
+      background: #f1f1f1;
+      border-color: #d6d6d6;
+    }
+    .avatar-upload .avatar-edit input + label:after {
+      content: "\f040";
+      font-family: 'FontAwesome';
+      color: #757575;
+      position: absolute;
+      top: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      margin: auto;
+    }
+    .avatar-upload .avatar-preview {
+      width: 192px;
+      height: 192px;
+      position: relative;
+      border-radius: 100%;
+      border: 6px solid #F8F8F8;
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    }
+    .avatar-upload .avatar-preview > div {
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+{% load static %}
+
+<link rel="icon" type="image/x-icon" href="{% static 'imgs/favicon.ico' %}"/>
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Linking Css file  -->
+<link href="{% static 'login.css' %}" rel="stylesheet"/>
+<script src="{% static 'main.js' %}"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+
+<!-- Linking Js file  -->
+<!-- Title  -->
+<title>Sociocode</title>
+
+{% endblock %}
+
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
+
+{% if form.errors %}
+{% for error in form.non_field_errors %}
+<div class="alert alert-danger">
+    <strong>{{ error|escape }}</strong>
+</div>
+{% endfor %}
+{% for error in form.errors %}
+<div class="alert alert-danger">
+    <strong>{{ error|escape }}</strong>
+</div>
+{% endfor %}
+{% endif %}
+
+
+<div class="login">
+    <div id="wrapper">
+        <form enctype="multipart/form-data" action="/accounts/{{prev_username}}/" method="POST"
+              onsubmit="return RegistrationFormValidation();">
+            {% csrf_token %}
+            <div class="main-content">
+                <div class="header">
+                    <img src="{% static 'imgs/logoImage.png' %}"/>
+                </div>
+                <div class="l-part">
+                    <h1>Personal Data</h1>
+                    <input type="text" name="username" placeholder="Username" maxlength="150" autofocus="" required=""
+                           id="id_username" class="input-field" value="{{prev_username}}">
+                    <!--<input type="text" name="username" placeholder="username" class="input-1"/> -->
+
+                    <input type="text" name="first_name" placeholder="First Name" maxlength="150" autofocus=""
+                           required=""
+                           id="id_first_name" class="input-field" value="{{prev_first_name}}">
+
+                    <input type="text" name="last_name" placeholder="Last Name" maxlength="150" autofocus="" required=""
+                           id="id_last_name" class="input-field" value="{{prev_last_name}}">
+
+                    <input type="email" name="email" required="" placeholder="Email" id="id_email" class="input-field"
+                           value="{{prev_email}}">
+
+                    <div class="overlap-text">
+                        <input type="password" placeholder="Password" name="password1" autocomplete="new-password"
+                               required="" id="id_password1" class="input-field">
+                        <!--<input type="password" name="password" placeholder="password" class="input-2"/> -->
+                    </div>
+
+                    <div class="overlap-text">
+                        <input type="password" placeholder="Confirm Password" name="password2"
+                               autocomplete="new-password" required="" id="id_password2" class="input-field">
+                        <!--<input type="password" name="password" placeholder="password" class="input-2"/> -->
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="main-content">
+                <div class="l-part">
+                    <h1>Profile Data</h1>
+
+                    <div class="overlap-text">
+                        <p style="float:left">bio:</p>
+                        <textarea placeholder="A Bit About You" name="bio" autocomplete="about you" id="id_bio"
+                                  class="input-field lFzco">{{prev_bio}}</textarea>
+
+                    </div>
+                    <br>
+                    <p style="float:left">Profile Picture:</p>
+                    <div class="overlap-text">
+                        <div class="avatar-upload">
+                            <div class="avatar-edit">
+                                <input placeholder="PFP" name="profile_pic" autocomplete="about you" type='file'
+                                       id="profile_pic" accept=".png, .jpg, .jpeg"/>
+                                <label for="profile_pic"></label>
+                            </div>
+                            <div class="avatar-preview">
+                                <div id="imagePreview" style="background-image: url('{{prev_pfp}}');">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <input type="submit" value="Update" class="btn"/>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

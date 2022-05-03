@@ -15,65 +15,88 @@
 {% block content %}
 
 <header>
-	<br>
-	<br>
-	<div class="container">
+    <br>
+    <br>
+    <div class="container">
 
-		<div class="profile">
+        <div class="profile">
 
-			<div class="profile-image">
+            <div class="profile-image">
 
-				<img src="{{profile_pic}}" alt="">
+                <img src="{{profile_pic}}" alt="">
 
-			</div>
-
-			<div class="profile-user-settings">
-
-				<h1 class="profile-user-name">{{username}}</h1>
-
-				<button id="editButton" onclick="window.location.href='/profile/{{user}}/edit/'" class="btn profile-edit-btn">Edit Profile</button>
+            </div>
 
 
-			</div>
+            <div class="profile-user-settings">
 
-			<div class="profile-stats">
+                <h1 id="username" class="profile-user-name">{{username}}</h1>
 
-				<ul>
-					<li><span class="profile-stat-count">{{posts}}</span> posts</li>
-					<li><span class="profile-stat-count">{{followers}}</span> followers</li>
-					<li><span class="profile-stat-count">{{following}}</span> following</li>
-				</ul>
+                {% if show %}
+                <br><br><br><br>
+                {% if is_follow %}
+                <span style="" class="vBF20 _1OSdk">
+                        <button style="background:white" aria-label="UnFollow" onclick="handle_follow(this)"
+                                class="_5f5mN       jIbKX  _6VtSN     yZn4P   ">
+                            <div style="color:black;"
+                                 class="_7UhW9   xLCgt        qyrsm            uL8Hv        T0kll ">Following</div>
+                        </button>
+                </span>
+                {% else %}
+                <span class="vBF20 _1OSdk">
+                <button aria-label="Follow" onclick="handle_follow(this)"
+                        class="_5f5mN       jIbKX  _6VtSN     yZn4P   ">
+                    <div class="_7UhW9   xLCgt        qyrsm            uL8Hv        T0kll ">Follow</div>
+                </button>
+                </span>
+                {% endif %}
+                {%else%}
+                <button id="editButton" onclick="window.location.href='/accounts/{{user}}'"
+                        class="btn profile-edit-btn">Edit Profile
+                </button>
+                {% endif %}
 
-			</div>
 
-			<div class="profile-bio">
+            </div>
 
-				<p><span class="profile-real-name">{{first_name}} {{last_name}}</span>{{bio}}</p>
+            <div class="profile-stats">
 
-			</div>
+                <ul>
+                    <li><span class="profile-stat-count">{{posts}}</span> posts</li>
+                    <li><span class="profile-stat-count">{{followers}}</span> followers</li>
+                    <li><span class="profile-stat-count">{{following}}</span> following</li>
+                </ul>
 
-		</div>
-		<!-- End of profile section -->
+            </div>
 
-	</div>
-	<!-- End of container -->
+            <div class="profile-bio">
+
+                <p><span class="profile-real-name">{{first_name}} {{last_name}}</span>&nbsp;&nbsp;{{bio}}</p>
+
+            </div>
+
+        </div>
+        <!-- End of profile section -->
+
+    </div>
+    <!-- End of container -->
 
 </header>
 
 <main>
 
-	<div class="container">
+    <div class="container">
 
-		<div id="gallery" class="gallery">
+        <div id="gallery" class="gallery">
 
-		</div>
-		<!-- End of gallery -->
+        </div>
+        <!-- End of gallery -->
 
 
-		<!--<div class="loader"></div>-->
+        <!--<div class="loader"></div>-->
 
-	</div>
-	<!-- End of container -->
+    </div>
+    <!-- End of container -->
 
 </main>
 

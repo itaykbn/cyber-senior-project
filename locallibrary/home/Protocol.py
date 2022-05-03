@@ -5,7 +5,7 @@ def encode_msg(stats):
         msg += "|"
     msg = msg[:-1]
 
-    return bytes(msg)
+    return bytes(msg, "utf-8")
 
 
 def decode_msg(msg):

@@ -1,3 +1,5 @@
+import time
+
 from django.apps import apps
 from .click_house_link import ClickHouseService
 
@@ -12,16 +14,28 @@ Coeffciants = {
 
 PostDB = apps.get_model('home', 'Post')
 UserDB = apps.get_model('accounts', 'User')
+FollowDB = apps.get_model('home', 'HumanConnections')
+CategoryDB = apps.get_model('home', 'Categories')
+CommentsDB = apps.get_model('home', 'Comments')
+
 UserAnalytics = ClickHouseService.instance()  # clickhouse
 
 
 class StudyObject:
-    def __init__(self, likes, active, step_in, categorie):
+    def __init__(self, likes, step_in, categorie):
         self.categorie = categorie
         self.likes = likes
         self.step_in = step_in
 
     def calculate_crabby_patty(self, friends):
+        if friends == 0:
+            friends = 1
+        if self.likes == 0:
+            self.likes = 1
+
+        if self.step_in == 0:
+            self.step_in = 1
+
         like_weight = Coeffciants["likes"] * self.likes
         step_in_weight = Coeffciants["step_in"] * self.step_in
         friends_weight = Coeffciants["friends"] * friends
@@ -30,81 +44,95 @@ class StudyObject:
 
 
 class CycleThread:
-
-    def __init__(self):
-        self.friends_objects = []
-
-    def get_friends_data_map(self):
+    @staticmethod
+    def get_friends_data_map(user):
+        friends = FollowDB.objects.filter(follower=user)
 
         # categories dict
-        categories_counter = {}
-        categories_ranking = {}
+        categories = {}
 
-        # init bonus
-        for user_categorie in Categories:
-            categories_counter[user_categorie] = 0
+        for friend in friends:
+            friend_cats = friend.follower.categories.split("#")
 
-        # sort categories
-        for friend_obj in self.friends_objects:
-            # filter categories for this friend
-            friend_top = []  # friend object - get top 3
+            for cat in friend_cats:
+                try:
+                    categories[cat] += 1
+                except:
+                    categories[cat] = 1
+        ranking = []
+        for i in range(len(categories)):
+            min_key = min(categories, key=categories.get)
+            ranking.append(min_key)
+            del categories[min_key]
 
-            for friend_categorie in friend_top:
-                categories_counter[friend_categorie] += 1
-
-        cat_number = len(Categories)  # initial rank
-        # replace numbers
-        while len(categories_counter) != 0:
-            value = max(categories_counter, key=categories_counter.get)
-            categories_ranking[value] = cat_number
-            cat_number -= 1  # derank
-            del categories_counter[value]
-
-        return categories_ranking
+        return ranking
 
     @staticmethod
     def get_user_data_map(analysis_data):
         # get data with user
         study_user = []
 
-        for i in range(len(Categories)):
-            categorie_analyitics = analysis_data  # filter only the relevant categorie
+        for row in analysis_data:
+            category = row[0]
 
-            study_object = StudyObject(categorie_analyitics.likes, categorie_analyitics.active_time,
-                                       categorie_analyitics.step_in,
-                                       Categories[i])
+            sub_cats = category.split("#")
 
-            study_user.append(study_object)  # add study_object to dict
+            for cat in sub_cats:
+                study_user.append(StudyObject(row[1], row[2], cat))
 
         return study_user
 
-    def calculate_categories(self, user_analysis, user_data):
+    def calculate_categories(self, user_analysis, user):
         # use friends objects and user object to call analysis functions
-        new_data = {}
-        friends_data = self.get_friends_data_map()
-        top_cats = []
+        calculated_data = {}
+        friends_top_cats = self.get_friends_data_map(user)
 
         for study_object in user_analysis:
-            friends = friends_data[study_object.categorie]
-            new_data[study_object.categorie] = study_object.calculate_crabby_patty(friends)
+            try:
+                friends = friends_top_cats.index(study_object.categorie) + 1
+            except:
+                friends = 0
+            calculated_data[study_object.categorie] = study_object.calculate_crabby_patty(friends)
 
+        print("============ calculated data" + str(calculated_data))
+
+        top_cats = []
         for i in range(3):
-            value = max(new_data, key=new_data.get)
-            top_cats.append(new_data[value])
-            del new_data[value]
+            key = max(calculated_data, key=calculated_data.get)
+            top_cats.append(key)
+            del calculated_data[key]
 
         return top_cats
 
     def start(self):
         # get all users
-        user_data = UserDB.object.all()
-        user_analytics = UserAnalytics
+        DAY = 60 * 60 * 24
+        while True:
+            time.sleep(DAY)
+            print("--------------------------------------")
+            user_data = UserDB.objects.all()
+            user_analytics = UserAnalytics
 
-        for i in range(user_data.count()):
-            self.friends_objects = None  # get friends from DB
+            for user in user_data:
+                user_data_query = user_analytics.select('user_activity',
+                                                        where=f"(user_id='{user.id}')",
+                                                        select_list=['category',
+                                                                     'sum(likes) AS likes, sum(step_in) AS step'],
+                                                        group_by_list=['category']
+                                                        )
+                user_data = user_analytics.execute(user_data_query)
+                print(f"=========user_data {user_data}")
+                if user_data:
+                    user_analysis_data = self.get_user_data_map(user_data)
 
-            user_analysis = self.get_user_data_map(user_analytics[i])
+                    cat1, cat2, cat3 = self.calculate_categories(user_analysis_data, user)
 
-            cat1, cat2, cat3 = self.calculate_categories(user_analysis, user_data[i])
+                    user.categories = f"{cat1}#{cat2}#{cat3}"
 
-            # insert new categories into DB
+                    user.save()
+
+
+def main():
+    cycle = CycleThread()
+
+    cycle.start()

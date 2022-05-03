@@ -38,3 +38,12 @@ class HumanConnections(models.Model):
     followed = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='followed')
     id = models.CharField(primary_key=True, editable=False, max_length=100)
 
+
+class Comments(models.Model):
+    id = models.CharField(primary_key=True, default=create_id, editable=False, max_length=100)
+    comment = models.CharField(max_length=1000, null=False)
+    post = models.ForeignKey('home.Post', on_delete=models.CASCADE)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
+
+
+

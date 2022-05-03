@@ -1,0 +1,30 @@
+{% block content_header %}
+{% load static %}
+<style>
+
+</style>
+<link href="{% static 'home.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'messages.css' %}" rel="stylesheet" type="text/css"/>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="comment-section">
+    <form id="comment-form" action="/{{post_id}}/comment" method="post">
+
+        {% csrf_token %}
+        <div class="comment-wrapper">
+            &nbsp&nbsp&nbsp<input name="comment" id="comment" type="text" class="comment-box"
+                                  placeholder="Add a comment">
+            <input class="comment-btn" type="submit" value="share">
+        </div>
+    </form>
+
+</div>
+
+
+{{comments|safe}}
+
+{% endblock %}
+

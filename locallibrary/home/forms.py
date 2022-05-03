@@ -11,12 +11,6 @@ from django.apps import apps
 from django.conf import settings
 
 
-class UpdateUserForm(forms.ModelForm):
-    class Meta:
-        model = apps.get_model('home', 'User')
-        fields = ("uri", "description")
-
-
 class PostForm(forms.ModelForm):
     description = forms.CharField(max_length=2200)
     uri = forms.CharField(widget=forms.HiddenInput())
@@ -79,3 +73,33 @@ def save_img(uri):
     fd.close()
 
     return f'{url_DB}/{name}.png'
+
+
+class CommentForm(forms.ModelForm):
+    comment = forms.CharField(max_length=2200)
+
+    class Meta:
+        model = apps.get_model('home', 'Comments')
+        fields = ("comment",)
+
+    def pre_save(self, user_id, post_id):
+        self.user_id = user_id
+        self.post_id = post_id
+
+    def save(self, commit=True):
+        UserDB = apps.get_model('accounts', 'User')
+        PostDB = apps.get_model('home', 'Post')
+
+        comment = super(CommentForm, self).save(commit=False)
+
+        comment.comment = self.cleaned_data["comment"]
+
+        comment.post = PostDB.objects.get(id=self.post_id)
+
+        comment.user = UserDB.objects.get(id=self.user_id)
+
+        # add categories
+
+        if commit:
+            comment.save()
+        return comment

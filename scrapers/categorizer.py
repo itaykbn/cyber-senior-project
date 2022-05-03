@@ -4088,7 +4088,6 @@ def get_birds():
             cum = hud.replace(" ", "_")
 
             birds.append(cum)
-    # print(birds)
 
     return birds
 
@@ -4096,12 +4095,9 @@ def get_birds():
 def categorize():
     my_categories = {"instruments": [], "fish": [], "dogs": [], "birds": [], "rest": []}
 
-    # cateories
-
     instruments = get_instruments()
     fish = get_fish()
     dogs = get_dogs()
-    #birds = get_birds()
 
     for index in DB:
         db_obj = DB[index][1]
@@ -4114,8 +4110,7 @@ def categorize():
             my_categories["fish"].append(db_obj)
         elif db_compare in dogs:
             my_categories["dogs"].append(db_obj)
-        #elif any(db_compare in string for string in birds):
-           # my_categories["birds"].append(db_obj)  # search last
+
 
         else:
             my_categories["rest"].append(db_obj)
@@ -4125,11 +4120,3 @@ def categorize():
 
 if __name__ == '__main__':
     categories = categorize()
-
-
-    '''
-    print(categories)
-
-    print(categories["rest"])
-    print(len(categories["rest"]))
-    '''
