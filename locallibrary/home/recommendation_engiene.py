@@ -3,8 +3,6 @@ import time
 from django.apps import apps
 from .click_house_link import ClickHouseService
 
-Categories = []
-
 Coeffciants = {
     "likes": 5,
     "step_in": 2,

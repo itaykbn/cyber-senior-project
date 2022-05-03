@@ -2,6 +2,7 @@ import threading
 from threading import Thread, Event
 
 from clickhouse_driver import Client
+from clickhouse_pool import ChPool
 
 
 class Queue:
@@ -51,6 +52,13 @@ class ClickHouseService(Singleton):
         self.__queue = Queue()
         # self.scheduler = sched.scheduler(time.time, time.sleep)
         # self.__repeat = 10
+
+        self.pool = ChPool(host="localhost",
+                           user='itay',
+                           password='pronto',
+                           database='Analytics'
+                           )
+
         self.__client = Client('localhost',
                                user='itay',
                                password='pronto',
@@ -85,7 +93,9 @@ class ClickHouseService(Singleton):
 
     def __exec_query(self, query):
         # print("__exec_query")
-        return self.__client.execute(query)
+
+        with self.pool.get_client() as client:
+            return client.execute(query)
 
     def execute(self, query):
         # print("--------------------query : " + query)
