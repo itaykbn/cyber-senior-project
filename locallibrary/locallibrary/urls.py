@@ -23,7 +23,6 @@ urlpatterns = [
 
 # Use include() to add paths from the catalog application
 from django.urls import include
-from django.views.generic.base import TemplateView
 
 urlpatterns += [
     path('accounts/', include('accounts.urls')),

@@ -1,9 +1,7 @@
-import asyncio
 import threading
-from clickhouse_driver import Client, connect
-from datetime import datetime
+from threading import Thread, Event
 
-from threading import Thread, Timer, Event
+from clickhouse_driver import Client
 
 
 class Queue:

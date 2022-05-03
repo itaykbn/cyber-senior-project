@@ -81,7 +81,7 @@ def ajax_query(request):
 
     if request.method == 'GET':
         try:
-            print("")
+            # print("")
             user_prof = UserDB.objects.get(username=request.GET.get('username', None))
 
         except:
@@ -149,7 +149,7 @@ def ajax_query(request):
 
             click_execute(query_string)
 
-            print(f"like \nvalue: {value} post_id: {post_id} ")
+            # print(f"like \nvalue: {value} post_id: {post_id} ")
 
             return HttpResponse()
 
@@ -164,7 +164,7 @@ def ajax_query(request):
 
             click_execute(query_string)
 
-            print(f"step_in \nvalue: {value} post_id: {post_id} ")
+            # print(f"step_in \nvalue: {value} post_id: {post_id} ")
 
             return HttpResponse()
 
@@ -179,7 +179,7 @@ def ajax_query(request):
             elif int(value) < 0:
                 FollowDB.objects.filter(follower=user, followed=followed).delete()
 
-            print(f"==========cum====== {user.last_name}")
+            # print(f"==========cum====== {user.last_name}")
 
             return HttpResponse()
 
@@ -203,7 +203,7 @@ def save_into_categories(categories, post_id):
 
     categories = categories.split("#")
     categories = list(filter(lambda a: a != "", categories))
-    print(categories)
+    # print(categories)
 
     for categorie in categories:
         post = PostDB.objects.get(id=post_id)
@@ -222,11 +222,11 @@ def select(request):
             form.cleaned_data['user_id'] = request.user.id
             form.save()
 
-            print("content------------------" + description)
-            print("content------------------" + request.user.id)
+            # print("content------------------" + description)
+            # print("content------------------" + request.user.id)
 
             return redirect("/")
-        print(form.errors)
+        # print(form.errors)
 
     else:
         form = PostForm()
@@ -248,7 +248,7 @@ def home(request):
 
     # cycle.start()
 
-    print("byeeeeeeeeeee")
+    # print("byeeeeeeeeeee")
 
     context = {
         "profile_pic": user.profile_pic
@@ -265,7 +265,7 @@ def redirect_to_post_page(request, post_id=None):
 
         post_html = create_home_post(post, user, post_id)
 
-        print(post_html)
+        # print(post_html)
         context = {
             "profile_pic": user.profile_pic,
             "post": post_html,
@@ -333,13 +333,13 @@ def profile(request, username=None):
 
         return render(request=request, template_name="profile.html", context=context)
     else:
-        print("==============" + username)
+        # print("==============" + username)
         user = None
         try:
             user = UserDB.objects.get(username=username)
         except:
             redirect("/")
-        print(f"============== {user}")
+        # print(f"============== {user}")
         if user:
             followers = FollowDB.objects.filter(followed=user).count
             following = FollowDB.objects.filter(follower=user).count
@@ -415,13 +415,13 @@ def am_i_like(user_id, post_id):
 
 
 def create_user_post(post_obj, user):
-    print("im hereeeee")
+    # print("im hereeeee")
     post_id = post_obj.id
     image = post_obj.img
 
     likes = get_likes(post_id)
 
-    print(f"=========== cum {likes}")
+    # print(f"=========== {likes}")
     comments = CommentsDB.objects.filter()
     comments = 0
     post_html = render_to_string("profile_post_temp.html")
@@ -494,7 +494,7 @@ def comment(request, post_id):
             form.save()
             return redirect(f"/{post_id}/comment")
 
-        print(form.errors)
+        # print(form.errors)
 
     else:
         form = CommentForm()

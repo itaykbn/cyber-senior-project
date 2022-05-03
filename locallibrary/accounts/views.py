@@ -1,11 +1,6 @@
-import datetime
-import os
-
-from django.conf import settings
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
@@ -64,16 +59,16 @@ def user_settings(request, username=None):
             post_data = request.POST
             post_data._mutable = True
             post_data['username'] = post_data['username'] + "@"
-            print("post_data")
-            print(post_data)
+            # print("post_data")
+            # print(post_data)
             form = UpdateUserData(post_data, request.FILES)
 
-            print(request.POST)
+            # print(request.POST)
             form.pre_save(prev_user.username, prev_user.email)
-            print("byeeeeee==============")
+            # print("byeeeeee==============")
 
             if form.is_valid():
-                print("hello==============")
+                #   print("hello==============")
                 updated_user = form.save()
                 login(request, updated_user)
                 return redirect("/")

@@ -3,7 +3,7 @@ import time
 
 import requests
 
-from Protocol import *
+from .Protocol import *
 import mysql.connector
 
 data_log_wrapper = "<----data---->\n"

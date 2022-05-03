@@ -1,7 +1,6 @@
 from uuid import uuid4
 import datetime
 from django.db import models
-
 from django.apps import apps
 
 

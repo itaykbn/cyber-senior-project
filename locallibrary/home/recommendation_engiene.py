@@ -94,7 +94,7 @@ class CycleThread:
                 friends = 0
             calculated_data[study_object.categorie] = study_object.calculate_crabby_patty(friends)
 
-        print("============ calculated data" + str(calculated_data))
+        # print("============ calculated data" + str(calculated_data))
 
         top_cats = []
         for i in range(3):
@@ -109,7 +109,7 @@ class CycleThread:
         DAY = 60 * 60 * 24
         while True:
             time.sleep(DAY)
-            print("--------------------------------------")
+            # print("--------------------------------------")
             user_data = UserDB.objects.all()
             user_analytics = UserAnalytics
 
@@ -121,7 +121,7 @@ class CycleThread:
                                                         group_by_list=['category']
                                                         )
                 user_data = user_analytics.execute(user_data_query)
-                print(f"=========user_data {user_data}")
+                # print(f"=========user_data {user_data}")
                 if user_data:
                     user_analysis_data = self.get_user_data_map(user_data)
 

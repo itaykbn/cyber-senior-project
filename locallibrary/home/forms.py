@@ -1,14 +1,12 @@
 import datetime
 import os
-import time
-from django.utils import timezone
-
-from .process_image import process_image
 
 from django import forms
 from django.apps import apps
-
 from django.conf import settings
+from django.utils import timezone
+
+from .process_image import process_image
 
 
 class PostForm(forms.ModelForm):
@@ -50,7 +48,7 @@ def save_into_categories(categories, post_id):
 
     categories = categories.split("#")
     categories = list(filter(lambda a: a != "", categories))
-    print(categories)
+    # print(categories)
 
     for categorie in categories:
         post = PostDB.objects.get(id=post_id)
