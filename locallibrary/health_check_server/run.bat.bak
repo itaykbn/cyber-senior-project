@@ -1,5 +1,0 @@
-@echo off
-
-pyton server.py
-
-pause
