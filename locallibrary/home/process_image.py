@@ -41,7 +41,11 @@ def process_image(path):
 
 def get_categorie(ml_class):
     file_dir = os.getcwd()
-    with open(file_dir + '\\home\\classes.json') as json_file:
+    add_path = ""
+    if "locallibrary" not in os.getcwd():
+        add_path = "\\locallibrary"
+
+    with open(file_dir + add_path + '\\home\\classes.json') as json_file:
         dictionary = json.load(json_file)
 
     def getpath(nested_dict, prepath=()):
