@@ -58,7 +58,7 @@ def save_into_categories(categories, post_id):
 def save_img(uri):
     from binascii import a2b_base64
 
-    save_dir = str(settings.MEDIA_ROOT) + "/imgs"
+    save_dir = str(settings.MEDIA_ROOT) + "\\imgs"
 
     url_DB = str(settings.MEDIA_URL) + "imgs"
 

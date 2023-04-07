@@ -2,3 +2,10 @@
 /venv
 /locallibrary/local_store
 baddie_scouter.py
+locallibrary/home/__pycache__
+locallibrary/home/migrations/
+locallibrary/accounts/migrations/
+locallibrary/routers/__pycache__/
+locallibrary/locallibrary/__pycache__/
+locallibrary/health_check_server/__pycache__/
+locallibrary/accounts/__pycache__/
