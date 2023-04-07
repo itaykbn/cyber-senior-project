@@ -1,13 +1,19 @@
 # cyber-senior-project
 ###DB config
 ```
-docker run -d --name clickhouse-server --ulimit nofile=262144:262144 -p 8123:8123 clickhouse/clickhouse-server
+#if compose fails
+docker run -d --name <container-name> --ulimit nofile=262144:262144 -p 8123:8123 clickhouse/<container-name>
 ```
 ###Table
 ```
-docker exec -it clickhouse-server clickhouse-client
+docker exec -it <container-name> clickhouse-client
 
-CREATE TABLE Analytics.user_activity
+
+create database Analytics 
+
+Use database Analytics
+
+CREATE TABLE user_activity 
 (
     `user_id` String,
     `post_id` String,
