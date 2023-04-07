@@ -1,6 +1,6 @@
 @echo off
 
-set path1=venv\scripts\python.exe
+set path1=locallibrary\venv\scripts\python.exe
 set path2=locallibrary
 
 set /p ip=Enter Ip:
