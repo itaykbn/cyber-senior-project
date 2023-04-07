@@ -182,5 +182,3 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = None
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-

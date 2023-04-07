@@ -34,7 +34,6 @@ def login_request(request):
             print("hello")
             return redirect("/")
     else:
-        # print(form.errors)
         messages.error(request, "Unsuccessful registration. Invalid information.")
         form = AuthenticationForm()
 
@@ -59,16 +58,11 @@ def user_settings(request, username=None):
             post_data = request.POST
             post_data._mutable = True
             post_data['username'] = post_data['username'] + "@"
-            # print("post_data")
-            # print(post_data)
-            form = UpdateUserData(post_data, request.FILES)
 
-            # print(request.POST)
+            form = UpdateUserData(post_data, request.FILES)
             form.pre_save(prev_user.username, prev_user.email)
-            # print("byeeeeee==============")
 
             if form.is_valid():
-                #   print("hello==============")
                 updated_user = form.save()
                 login(request, updated_user)
                 return redirect("/")

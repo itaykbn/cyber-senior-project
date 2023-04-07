@@ -43,6 +43,3 @@ class Comments(models.Model):
     comment = models.CharField(max_length=1000, null=False)
     post = models.ForeignKey('home.Post', on_delete=models.CASCADE)
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
-
-
-

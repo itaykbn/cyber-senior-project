@@ -70,12 +70,8 @@ class ClickHouseService(Singleton):
         self.lock = threading.Lock()
 
     def __start(self):
-        # print("my hood is showing")
-
         stop_flag = Event()
-
         thread = MyThread(stop_flag, self.__handle_queue)
-
         thread.setDaemon(True)
         thread.start()
 
@@ -87,29 +83,20 @@ class ClickHouseService(Singleton):
                 query = self.__queue.dequeue()
                 query_string += query
                 query_string += "\n"
-            # print("__handle_queue")
 
             self.__exec_query(query_string)
 
     def __exec_query(self, query):
-        # print("__exec_query")
-
         with self.pool.get_client() as client:
             return client.execute(query)
 
     def execute(self, query):
-        # print("--------------------query : " + query)
-
         query_type = query.split("\n", 1)[0]
 
-        # print("query_type" + query_type)
-
         if query_type == "SELECT":
-            # print("i'm inside select")
             return self.__exec_query(query)
 
         else:
-            # print("i'm inside insert")
             self.__queue.enqueue(query)
             return None
 

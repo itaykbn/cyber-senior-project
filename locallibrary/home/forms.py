@@ -21,13 +21,11 @@ class PostForm(forms.ModelForm):
         UserDB = apps.get_model('accounts', 'User')
 
         post = super(PostForm, self).save(commit=False)
-
         img_path = save_img(self.cleaned_data["uri"])
 
         post.img = img_path
         post.caption = self.cleaned_data["description"]
 
-        # print("-------------user" + post.user)
         post.published = timezone.now()
         post.user = UserDB.objects.get(id=self.cleaned_data["user_id"])
 
@@ -35,7 +33,6 @@ class PostForm(forms.ModelForm):
         categories = process_image(path_root + img_path.replace("/", "\\"))
 
         # add categories
-
         if commit:
             post.save()
             save_into_categories(categories, post.id)
@@ -48,7 +45,6 @@ def save_into_categories(categories, post_id):
 
     categories = categories.split("#")
     categories = list(filter(lambda a: a != "", categories))
-    # print(categories)
 
     for categorie in categories:
         post = PostDB.objects.get(id=post_id)
@@ -59,11 +55,8 @@ def save_img(uri):
     from binascii import a2b_base64
 
     save_dir = str(settings.MEDIA_ROOT) + "\\imgs"
-
     url_DB = str(settings.MEDIA_URL) + "imgs"
-
     binary_data = a2b_base64(uri)
-
     name = f"sociocode_{str(datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))}{len(os.listdir(save_dir))}"
 
     fd = open(f'{save_dir}/{name}.png', 'wb')
@@ -89,15 +82,11 @@ class CommentForm(forms.ModelForm):
         PostDB = apps.get_model('home', 'Post')
 
         comment = super(CommentForm, self).save(commit=False)
-
         comment.comment = self.cleaned_data["comment"]
-
         comment.post = PostDB.objects.get(id=self.post_id)
-
         comment.user = UserDB.objects.get(id=self.user_id)
 
         # add categories
-
         if commit:
             comment.save()
         return comment

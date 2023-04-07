@@ -30,15 +30,12 @@ def create_post_list(index, posts, post_type):
 
     n_objects = len(posts)
 
-    # print("--------------------objects " + str(post_type))
     for i in range(post_chunk):
         if index + i >= n_objects:
             if post_type == "home":
-                # print("--------------------index in " + str(i))
                 overlapped_index = (index + i) % n_objects
                 new_posts[i] = posts[overlapped_index]
         else:
-            # print("--------------------index out " + str(i))
             new_posts[i] = posts[index + i]
 
     return new_posts
@@ -55,7 +52,6 @@ def get_post_category(post):
 
 def click_execute(query):
     result = click_db.execute(query)
-
     return result
 
 
@@ -81,9 +77,7 @@ def ajax_query(request):
 
     if request.method == 'GET':
         try:
-            # print("")
             user_prof = UserDB.objects.get(username=request.GET.get('username', None))
-
         except:
             user_prof = request.user
         index = request.GET.get('index', None)
@@ -124,14 +118,11 @@ def ajax_query(request):
                 finish = 1
 
         htmls = []
-
         for post in posts:
             if post is not None:
                 htmls.append(create_post(post, request.user))
 
         context = {'HTMLS': htmls, 'finish': finish}
-
-        # print(context, len(context['HTMLS']))
 
         return JsonResponse(context)
 
@@ -146,25 +137,15 @@ def ajax_query(request):
 
             query_string = click_db.insert(user.id, post.id, get_post_category(post), value,
                                            0)
-
             click_execute(query_string)
-
-            # print(f"like \nvalue: {value} post_id: {post_id} ")
-
             return HttpResponse()
 
         elif request_type == 'step_in':
             value = int(request.POST.get('value', None))
             post_id = request.POST.get('post_id', None)
-
             post = PostDB.objects.get(id=post_id)
-
             query_string = click_db.insert(user.id, post.id, get_post_category(post), 0, value)
-            # print(query_string)
-
             click_execute(query_string)
-
-            # print(f"step_in \nvalue: {value} post_id: {post_id} ")
 
             return HttpResponse()
 
@@ -178,8 +159,6 @@ def ajax_query(request):
                 FollowDB.objects.create(id=create_id(), follower=user, followed=followed)
             elif int(value) < 0:
                 FollowDB.objects.filter(follower=user, followed=followed).delete()
-
-            # print(f"==========cum====== {user.last_name}")
 
             return HttpResponse()
 
@@ -203,7 +182,6 @@ def save_into_categories(categories, post_id):
 
     categories = categories.split("#")
     categories = list(filter(lambda a: a != "", categories))
-    # print(categories)
 
     for categorie in categories:
         post = PostDB.objects.get(id=post_id)
@@ -222,12 +200,7 @@ def select(request):
             form.cleaned_data['user_id'] = request.user.id
             form.save()
 
-            # print("content------------------" + description)
-            # print("content------------------" + request.user.id)
-
             return redirect("/")
-        # print(form.errors)
-
     else:
         form = PostForm()
     context = {
@@ -242,13 +215,6 @@ def select(request):
 @login_required(login_url='/accounts/login')
 def home(request):
     user = request.user
-    # hood()
-
-    # cycle = CycleThread()
-
-    # cycle.start()
-
-    # print("byeeeeeeeeeee")
 
     context = {
         "profile_pic": user.profile_pic
@@ -260,12 +226,9 @@ def home(request):
 def redirect_to_post_page(request, post_id=None):
     if PostDB.objects.filter(id=post_id).exists():
         user = request.user
-
         post = PostDB.objects.get(id=post_id)
-
         post_html = create_home_post(post, user, post_id)
 
-        # print(post_html)
         context = {
             "profile_pic": user.profile_pic,
             "post": post_html,
@@ -333,13 +296,11 @@ def profile(request, username=None):
 
         return render(request=request, template_name="profile.html", context=context)
     else:
-        # print("==============" + username)
         user = None
         try:
             user = UserDB.objects.get(username=username)
         except:
             redirect("/")
-        # print(f"============== {user}")
         if user:
             followers = FollowDB.objects.filter(followed=user).count
             following = FollowDB.objects.filter(follower=user).count
@@ -383,8 +344,6 @@ def get_likes(post_id):
                                    where=f"(post_id = '{post_id}')",
                                    select_list=["sum(likes) AS likes"]
                                    )
-
-    # print(query_string)
     click_result = click_execute(query_string)
 
     if click_result:
@@ -401,7 +360,6 @@ def am_i_like(user_id, post_id):
                                    select_list=["sum(likes) AS likes"]
                                    )
 
-    # print(query_string)
     click_result = click_execute(query_string)
 
     if click_result:
@@ -415,13 +373,10 @@ def am_i_like(user_id, post_id):
 
 
 def create_user_post(post_obj, user):
-    # print("im hereeeee")
     post_id = post_obj.id
     image = post_obj.img
-
     likes = get_likes(post_id)
 
-    # print(f"=========== {likes}")
     comments = CommentsDB.objects.filter()
     comments = 0
     post_html = render_to_string("profile_post_temp.html")
@@ -471,13 +426,8 @@ def create_home_post(post_obj, user, post_id=None):
                      post_caption,
                      post_uploaded, comment_html]
 
-    # print(replace_array)
-
     for item in replace_array:
-        # print(item)
         post_html = post_html.replace("{}", str(item), 1)
-
-        # print(post_html)
 
     return post_html
 
@@ -493,9 +443,6 @@ def comment(request, post_id):
             form.pre_save(user.id, post_id)
             form.save()
             return redirect(f"/{post_id}/comment")
-
-        # print(form.errors)
-
     else:
         form = CommentForm()
     context = {

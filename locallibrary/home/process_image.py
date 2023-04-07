@@ -7,22 +7,15 @@ from keras.preprocessing.image import img_to_array
 from keras.applications.vgg16 import preprocess_input
 from keras.applications.vgg16 import decode_predictions
 
-from django.apps import apps
-
-from django.conf import settings
-
 
 def process_image(path):
     model = VGG16()
 
     undetermined = 0.30
-    # print(model.summary())
 
     image = load_img(path, target_size=(224, 224))
     image = img_to_array(image)  # output Numpy-array
-
     image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
-
     image = preprocess_input(image)
     yhat = model.predict(image)
 
@@ -32,7 +25,6 @@ def process_image(path):
     if first_label[2] < undetermined:
         labels.append(label[0][1])
 
-    # print(labels)
     categories = []
     for label in labels:
         categories.append(get_categorie(label[1]))
@@ -49,7 +41,6 @@ def process_image(path):
 
 def get_categorie(ml_class):
     file_dir = os.getcwd()
-    # print(file_dir)
     with open(file_dir + '\\home\\classes.json') as json_file:
         dictionary = json.load(json_file)
 

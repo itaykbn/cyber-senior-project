@@ -28,7 +28,6 @@ class UpdateUserData(UserCreationForm):
 
     def save_img(self, file):
 
-        # print(f"file recruiter {file}")
         save_dir = str(settings.MEDIA_ROOT) + "/profile_pics"
 
         url_DB = str(settings.MEDIA_URL) + "profile_pics"
@@ -37,8 +36,6 @@ class UpdateUserData(UserCreationForm):
         with open(f'{save_dir}/{name}.png', 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
-
-        # print(f'{url_DB}/{name}.png')
 
         return f'{url_DB}/{name}.png'
 
@@ -76,7 +73,6 @@ class UpdateUserData(UserCreationForm):
         user = super(UpdateUserData, self).save(commit=False)
         user.email = self.cleaned_data["email"]
         user.first_name = self.cleaned_data["first_name"]
-        # print(user.first_name)
         user.last_name = self.cleaned_data["last_name"]
         user.username = self.cleaned_data["username"][:-1]
         user.profile_pic = self.cleaned_data["profile_pic"]
@@ -92,7 +88,6 @@ class UpdateUserData(UserCreationForm):
         prev_user.bio = user.bio
         if user.profile_pic is not None:
             prev_user.profile_pic = user.profile_pic
-        # print(prev_user.last_name)
 
         if commit:
             prev_user.save()
