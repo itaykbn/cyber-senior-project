@@ -26,6 +26,6 @@ ENGINE = SummingMergeTree
 PARTITION BY toYYYYMMDD(dbTime)
 ORDER BY (user_id, category)
 
-insert into user_activity  SELECT generateUUIDv4(),1,2,3
+insert into user_activity  SELECT generateUUIDv4(),1,2,3,4
 
 ```
